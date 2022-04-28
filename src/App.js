@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/header';
+import Spinner from './components/loader';
 import ListCountries from './components/listCountries';
 
 function App() {
@@ -41,18 +42,19 @@ function App() {
           sorted = filterArray.sort((a, b) => {
             return b.name.localeCompare(a.name);
           })
+          setFilterArray(sorted);
           break;
 
         case 'descending':
           sorted = filterArray.sort((a, b) => {
             return a.name.localeCompare(b.name);
           })
+          setFilterArray(sorted);
           break;
 
         default:
           break;
       }
-      setFilterArray(sorted);
     };
 
     sortArray(sortType);
@@ -68,12 +70,11 @@ function App() {
     const filtered = data.filter(el => el.area <= Lithuania.area);
     setFilterArray(filtered);
   }
-  if (loding) return "Loading";
+  if (loding) return <Spinner />;
   if (error) return "Error!";
   return (
     <div className="App">
       < Header />
-
       <div className="filters">
         <div className="button-box">
           <button
@@ -88,13 +89,19 @@ function App() {
           </button>
         </div>
         <div className="select-box">
-          <select onChange={(e) => setSortType(e.target.value)}>
-            <option value="ascending">ascending</option>
-            <option value="descending">descending</option>
+          <select
+            value={sortType}
+            defaultValue={"default"}
+            onChange={(e) => setSortType(e.target.value)}>
+            <option value={"default"} disabled>
+              Choose an option
+            </option>
+            <option value="ascending" >ascending</option>
+            <option value="descending" defaultValue>descending</option>
           </select>
         </div>
       </div>
-      < ListCountries data={filterArray} />
+      < ListCountries content={filterArray} />
     </div>
   );
 }

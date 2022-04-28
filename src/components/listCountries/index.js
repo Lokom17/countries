@@ -1,7 +1,9 @@
-const ListCountries = ({ data }) => {
+import { useEffect, useState } from 'react';
+
+const ListCountries = ({ content }) => {
     return (
         <div className="list">
-            {data.map(item => {
+            {content.map(item => {
                 return (
                     <div key={item.name} className='list-item'>
                         <h3>country: {item.name}</h3>
